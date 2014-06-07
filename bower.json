@@ -1,0 +1,33 @@
+{
+  "name": "sigmajs-polinode",
+  "version": "1.0.4",
+  "main": [
+    "build/sigma.min.js",
+    "build/sigma.require.js",
+    "build/plugins/sigma.layout.forceAtlas2.min.js",
+    "build/plugins/sigma.parsers.gexf.min.js",
+    "build/plugins/sigma.parsers.json.min.js",
+    "build/plugins/sigma.plugins.animate.min.js",
+    "build/plugins/sigma.dragNodes.min.js",
+    "build/plugins/sigma.neighborhoods.min.js",
+    "build/plugins/sigma.renderers.customShapes.min.js"
+  ],
+  "keywords": [
+    "Polinode",
+    "Sigma"
+  ],
+  "ignore": [
+    "/examples",
+    "/node_modules",
+    "/plugins",
+    "/src",
+    "/test",
+    ".gitignore",
+    ".npmignore",
+    ".travis.yml",
+    "bower.json",
+    "CHANGELOG.md",
+    "Gruntfile.js",
+    "package.json"
+  ]
+}
