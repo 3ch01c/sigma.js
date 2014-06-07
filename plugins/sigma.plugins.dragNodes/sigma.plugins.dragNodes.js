@@ -31,19 +31,20 @@
     if (
       sigma.renderers.webgl &&
       renderer instanceof sigma.renderers.webgl
-    )
+      )
       throw new Error(
         'The sigma.plugins.dragNodes is not compatible with the WebGL renderer'
       );
 
     var _body = document.body,
-        _container = renderer.container,
-        _mouse = _container.lastChild,
-        _camera = renderer.camera,
-        _node = null,
-        _prefix = '',
-        _isOverNode = false,
-        _isMouseOverCanvas = false;
+      _container = renderer.container,
+      _mouse = _container.lastChild,
+      _camera = renderer.camera,
+      _node = null,
+      _prefix = '',
+      _hoverStack = [],
+      _isMouseDown = false,
+      _isMouseOverCanvas = false;
 
     // It removes the initial substring ('read_') if it's a WegGL renderer.
     if (renderer instanceof sigma.renderers.webgl) {
@@ -53,28 +54,36 @@
     }
 
     var nodeMouseOver = function(event) {
-      if (!_isOverNode) {
-        _node = event.data.node;
+      // Add node to array of current nodes over
+      _hoverStack.push(event.data.node);
+
+      if(_hoverStack.length && ! _isMouseDown) {
+        // Set the current node to be the last one in the array
+        _node = _hoverStack[_hoverStack.length - 1];
         _mouse.addEventListener('mousedown', nodeMouseDown);
-        _isOverNode = true;
       }
     };
 
     var treatOutNode = function(event) {
-      if (_isOverNode) {
+      // Remove the node from the array
+      var indexCheck = _hoverStack.map(function(e) { return e; }).indexOf(event.data.node);
+      _hoverStack.splice(indexCheck, 1);
+
+      if(_hoverStack.length && ! _isMouseDown) {
+        // On out, set the current node to be the next stated in array
+        _node = _hoverStack[_hoverStack.length - 1];
+      } else {
         _mouse.removeEventListener('mousedown', nodeMouseDown);
-        _isOverNode = false;
       }
     };
 
     var nodeMouseDown = function(event) {
+      _isMouseDown = true;
       var size = s.graph.nodes().length;
       if (size > 1) {
         _mouse.removeEventListener('mousedown', nodeMouseDown);
         _body.addEventListener('mousemove', nodeMouseMove);
         _body.addEventListener('mouseup', nodeMouseUp);
-
-        renderer.unbind('outNode', treatOutNode);
 
         // Deactivate drag graph.
         renderer.settings({mouseEnabled: false, enableHovering: false});
@@ -83,12 +92,10 @@
     };
 
     var nodeMouseUp = function(event) {
+      _isMouseDown = false;
       _mouse.addEventListener('mousedown', nodeMouseDown);
       _body.removeEventListener('mousemove', nodeMouseMove);
       _body.removeEventListener('mouseup', nodeMouseUp);
-
-      treatOutNode();
-      renderer.bind('outNode', treatOutNode);
 
       // Activate drag graph.
       renderer.settings({mouseEnabled: true, enableHovering: true});
@@ -97,11 +104,11 @@
 
     var nodeMouseMove = function(event) {
       var x = event.pageX - _container.offsetLeft,
-          y = event.pageY - _container.offsetTop,
-          cos = Math.cos(_camera.angle),
-          sin = Math.sin(_camera.angle),
-          nodes = s.graph.nodes(),
-          ref = [];
+        y = event.pageY - _container.offsetTop,
+        cos = Math.cos(_camera.angle),
+        sin = Math.sin(_camera.angle),
+        nodes = s.graph.nodes(),
+        ref = [];
 
       // Getting and derotating the reference coordinates.
       for (var i = 0; i < 2; i++) {
