@@ -2441,7 +2441,8 @@ if (typeof exports !== 'undefined') {
     maxEdgeSize: 1,
     minNodeSize: 1,
     maxNodeSize: 8,
-
+    // {number} Defines the minimal edge's arrow display size.
+    minArrowSize: 0,
 
 
 
@@ -7928,7 +7929,7 @@ if (typeof exports !== 'undefined') {
         sY = source[prefix + 'y'],
         tX = target[prefix + 'x'],
         tY = target[prefix + 'y'],
-        aSize = thickness * 2.5,
+        aSize = Math.max(thickness * 2.5, settigs('minArrowSize')),
         d = Math.sqrt(Math.pow(tX - sX, 2) + Math.pow(tY - sY, 2)),
         aX = sX + (tX - sX) * (d - aSize - tSize) / d,
         aY = sY + (tY - sY) * (d - aSize - tSize) / d,
@@ -8008,7 +8009,7 @@ if (typeof exports !== 'undefined') {
                    (source[prefix + 'x'] - target[prefix + 'x']) / 4,
         tX = target[prefix + 'x'],
         tY = target[prefix + 'y'],
-        aSize = thickness * 2.5,
+        aSize = Math.min(thickness * 2.5, settings('minArrowSize')),
         d = Math.sqrt(Math.pow(tX - controlX, 2) + Math.pow(tY - controlY, 2)),
         aX = controlX + (tX - controlX) * (d - aSize - tSize) / d,
         aY = controlY + (tY - controlY) * (d - aSize - tSize) / d,
