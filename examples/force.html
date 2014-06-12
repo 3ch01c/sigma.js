@@ -111,12 +111,19 @@ for (i = 0; i < E; i++) {
 
 s = new sigma({
   graph: g,
-  container: 'graph-container',
+//  container: 'graph-container',
+  renderer: {
+    container: document.getElementById('graph-container'),
+    type: 'canvas'
+  },
   settings: {
     drawEdges: false
   }
 });
 
 // Start the ForceAtlas2 algorithm:
+s.configForceAtlas2({
+  maxIterations:10
+});
 s.startForceAtlas2();
 </script>

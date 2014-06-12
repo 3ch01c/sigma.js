@@ -184,17 +184,16 @@
       window.postMessage(content, '*');
   };
 
-  Supervisor.prototype.start = function(config) {
+  Supervisor.prototype.start = function() {
     if (this.running)
       return;
 
     this.running = true;
-    this.config = config;
 
     if (!this.started) {
 
       // Sending init message to worker
-      this.sendByteArrayToWorker('start', config);
+      this.sendByteArrayToWorker('start');
       this.started = true;
     }
     else {
