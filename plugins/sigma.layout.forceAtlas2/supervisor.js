@@ -172,7 +172,7 @@
     var buffers = [this.nodesByteArray.buffer];
 
     if (action === 'start') {
-      content.config = config || {};
+      content.config = this.config || {};
       content.edges = this.edgesByteArray.buffer;
       buffers.push(this.edgesByteArray.buffer);
     }
