@@ -7692,14 +7692,14 @@ if (typeof exports !== 'undefined') {
       (node.color || settings('defaultNodeColor')) :
       settings('defaultHoverLabelBGColor');
 
-    if (settings('labelHoverShadow')) {
+    if (node.label && settings('labelHoverShadow')) {
       context.shadowOffsetX = 0;
       context.shadowOffsetY = 0;
       context.shadowBlur = 8;
       context.shadowColor = settings('labelHoverShadowColor');
     }
 
-    if (typeof node.label === 'string') {
+    if (node.label && typeof node.label === 'string') {
       x = Math.round(node[prefix + 'x'] - fontSize / 2 - 2);
       y = Math.round(node[prefix + 'y'] - fontSize / 2 - 2);
       w = Math.round(
@@ -8723,28 +8723,21 @@ if (typeof exports !== 'undefined') {
    */
   sigma.misc.drawHovers = function(prefix) {
     var self = this,
-        hoveredNodes = {};
+        hoveredNodes = [];
 
-    this.bind('overNodes', function(event) {
-      var n = event.data.nodes,
-          l = n.length,
-          i;
-
-      for (i = 0; i < l; i++)
-        hoveredNodes[n[i].id] = n[i];
-
+    this.bind('overNode', function(event) {
+      hoveredNodes.push(event.data.node);
       draw();
     });
-    this.bind('outNodes', function(event) {
-      var n = event.data.nodes,
-          l = n.length,
-          i;
 
-      for (i = 0; i < l; i++)
-        delete hoveredNodes[n[i].id];
-
+    this.bind('outNode', function(event) {
+      var indexCheck = hoveredNodes.map(function(n) {
+        return n;
+      }).indexOf(event.data.node);
+      hoveredNodes.splice(indexCheck, 1);
       draw();
     });
+
     this.bind('render', function(event) {
       draw();
     });
@@ -8759,15 +8752,32 @@ if (typeof exports !== 'undefined') {
             prefix: prefix
           });
 
-      // Render
-      if (embedSettings('enableHovering'))
-        for (k in hoveredNodes)
-          if (!hoveredNodes[k].hidden)
-            (renderers[hoveredNodes[k].type] || renderers.def)(
-              hoveredNodes[k],
+      //Single hover
+      if(embedSettings('enableHovering') && embedSettings('singleHover') && hoveredNodes.length) {
+        if(! hoveredNodes[hoveredNodes.length - 1].hidden) {
+          (renderers[hoveredNodes[hoveredNodes.length - 1].type] || renderers.def)(
+            hoveredNodes[hoveredNodes.length - 1],
+            self.contexts.hover,
+            embedSettings
+          );
+        }
+      }
+
+      //Multiple hover
+      if(embedSettings('enableHovering') && !embedSettings('singleHover') && hoveredNodes.length) {
+        for(var i=0; i<hoveredNodes.length; i++) {
+           console.log('yep');
+          if(! hoveredNodes[i].hidden) {
+            (renderers[hoveredNodes[i].type] || renderers.def)(
+              hoveredNodes[i],
               self.contexts.hover,
               embedSettings
             );
+          }
+        }
+      }
+
+
     }
   };
 }).call(this);
