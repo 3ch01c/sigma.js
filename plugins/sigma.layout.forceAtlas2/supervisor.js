@@ -68,6 +68,7 @@
         // Applying layout
         _this.applyLayoutChanges();
 
+        if(!_this.config) _this.config = {};
         // If the number of iterations is over the maximum defined
         if (typeof _this.config.maxIterations == "number" &&
           e.data.iterations >= _this.config.maxIterations) {
