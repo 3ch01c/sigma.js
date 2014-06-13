@@ -20,7 +20,8 @@
    * @param {object}  options     The parameters.
    */
   sigma.middlewares.rescale = function(readPrefix, writePrefix, options) {
-    var i,
+    var _this = this,
+        i,
         l,
         a,
         b,
@@ -60,6 +61,8 @@
         h / Math.max(maxY - minY, 1)
       );
 
+    setTimeout(function() { if(settings('fixedScaling') && !_this.graph.initScale && !_this.isForceAtlas2Running()) _this.graph.initScale = scale },50);
+
     /**
      * Then, we correct that scaling ratio considering a margin, which is
      * basically the size of the biggest node.
@@ -89,6 +92,8 @@
         w / Math.max(maxX - minX, 1),
         h / Math.max(maxY - minY, 1)
       );
+
+    setTimeout(function() { if(settings('fixedScaling') && !_this.graph.initScale && !_this.isForceAtlas2Running()) _this.graph.initScale = scale },50);
 
     // Size homothetic parameters:
     if (!settings('maxNodeSize') && !settings('minNodeSize')) {
@@ -120,9 +125,9 @@
     for (i = 0, l = n.length; i < l; i++) {
       n[i][writePrefix + 'size'] = n[i][readPrefix + 'size'] * a + b;
       n[i][writePrefix + 'x'] =
-        (n[i][readPrefix + 'x'] - (maxX + minX) / 2) * scale;
+        (n[i][readPrefix + 'x'] - (maxX + minX) / 2) * (this.graph.initScale || scale);
       n[i][writePrefix + 'y'] =
-        (n[i][readPrefix + 'y'] - (maxY + minY) / 2) * scale;
+        (n[i][readPrefix + 'y'] - (maxY + minY) / 2) * (this.graph.initScale || scale);
     }
   };
 

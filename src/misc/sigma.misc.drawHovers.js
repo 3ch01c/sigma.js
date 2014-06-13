@@ -59,7 +59,6 @@
       //Multiple hover
       if(embedSettings('enableHovering') && !embedSettings('singleHover') && hoveredNodes.length) {
         for(var i=0; i<hoveredNodes.length; i++) {
-           console.log('yep');
           if(! hoveredNodes[i].hidden) {
             (renderers[hoveredNodes[i].type] || renderers.def)(
               hoveredNodes[i],
