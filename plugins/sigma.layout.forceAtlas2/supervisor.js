@@ -68,6 +68,7 @@
         // Applying layout
         _this.applyLayoutChanges();
 
+        if(!_this.config) _this.config = {};
         // If the number of iterations is over the maximum defined
         if (typeof _this.config.maxIterations == "number" &&
           e.data.iterations >= _this.config.maxIterations) {
@@ -183,17 +184,16 @@
       window.postMessage(content, '*');
   };
 
-  Supervisor.prototype.start = function(config) {
+  Supervisor.prototype.start = function() {
     if (this.running)
       return;
 
     this.running = true;
-    this.config = config;
 
     if (!this.started) {
 
       // Sending init message to worker
-      this.sendByteArrayToWorker('start', config);
+      this.sendByteArrayToWorker('start');
       this.started = true;
     }
     else {
