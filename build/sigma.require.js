@@ -8110,7 +8110,7 @@ if (typeof exports !== 'undefined') {
         h / Math.max(maxY - minY, 1)
       );
 
-    setTimeout(function() { if(settings('fixedScaling') && !_this.graph.initScale && !_this.isForceAtlas2Running()) _this.graph.initScale = scale },50);
+    setTimeout(function() { if(settings('fixedScaling') && !_this.graph.initScale && !_this.isForceAtlas2Running()) _this.graph.initScale = scale });
 
     /**
      * Then, we correct that scaling ratio considering a margin, which is
@@ -8142,7 +8142,7 @@ if (typeof exports !== 'undefined') {
         h / Math.max(maxY - minY, 1)
       );
 
-    setTimeout(function() { if(settings('fixedScaling') && !_this.graph.initScale && !_this.isForceAtlas2Running()) _this.graph.initScale = scale },50);
+    setTimeout(function() { if(settings('fixedScaling') && !_this.graph.initScale && !_this.isForceAtlas2Running()) _this.graph.initScale = scale });
 
     // Size homothetic parameters:
     if (!settings('maxNodeSize') && !settings('minNodeSize')) {

@@ -83,7 +83,11 @@ sigma.renderers.def = sigma.renderers.canvas
 // Instanciate sigma:
 s = new sigma({
   graph: g,
-  container: 'graph-container',
+//  container: 'graph-container',
+  renderer: {
+    type: 'canvas',
+    container: document.getElementById('graph-container')
+  },
   settings: {
     fixedScaling: true,
     zoomMin: 0,
