@@ -116,11 +116,9 @@
     };
 
     var nodeMouseMove = function(event) {
-<<<<<<< HEAD
       var offset = calculateOffset(_container),
           x = event.pageX - offset.left,
           y = event.pageY - offset.top,
-=======
 
       if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
         clearTimeout(timeOut);
@@ -132,7 +130,6 @@
       function executeNodeMouseMove() {
         var x = event.pageX - _container.offsetLeft,
           y = event.pageY - _container.offsetTop,
->>>>>>> 9188908f4212d6e2842362f68b61e099f55f9218
           cos = Math.cos(_camera.angle),
           sin = Math.sin(_camera.angle),
           nodes = s.graph.nodes(),
