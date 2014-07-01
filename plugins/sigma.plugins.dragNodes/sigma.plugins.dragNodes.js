@@ -31,19 +31,20 @@
     if (
       sigma.renderers.webgl &&
       renderer instanceof sigma.renderers.webgl
-    )
+      )
       throw new Error(
         'The sigma.plugins.dragNodes is not compatible with the WebGL renderer'
       );
 
     var _body = document.body,
-        _container = renderer.container,
-        _mouse = _container.lastChild,
-        _camera = renderer.camera,
-        _node = null,
-        _prefix = '',
-        _isOverNode = false,
-        _isMouseOverCanvas = false;
+      _container = renderer.container,
+      _mouse = _container.lastChild,
+      _camera = renderer.camera,
+      _node = null,
+      _prefix = '',
+      _hoverStack = [],
+      _isMouseDown = false,
+      _isMouseOverCanvas = false;
 
     // It removes the initial substring ('read_') if it's a WegGL renderer.
     if (renderer instanceof sigma.renderers.webgl) {
@@ -66,28 +67,36 @@
     };
 
     var nodeMouseOver = function(event) {
-      if (!_isOverNode) {
-        _node = event.data.node;
+      // Add node to array of current nodes over
+      _hoverStack.push(event.data.node);
+
+      if(_hoverStack.length && ! _isMouseDown) {
+        // Set the current node to be the last one in the array
+        _node = _hoverStack[_hoverStack.length - 1];
         _mouse.addEventListener('mousedown', nodeMouseDown);
-        _isOverNode = true;
       }
     };
 
     var treatOutNode = function(event) {
-      if (_isOverNode) {
+      // Remove the node from the array
+      var indexCheck = _hoverStack.map(function(e) { return e; }).indexOf(event.data.node);
+      _hoverStack.splice(indexCheck, 1);
+
+      if(_hoverStack.length && ! _isMouseDown) {
+        // On out, set the current node to be the next stated in array
+        _node = _hoverStack[_hoverStack.length - 1];
+      } else {
         _mouse.removeEventListener('mousedown', nodeMouseDown);
-        _isOverNode = false;
       }
     };
 
     var nodeMouseDown = function(event) {
+      _isMouseDown = true;
       var size = s.graph.nodes().length;
       if (size > 1) {
         _mouse.removeEventListener('mousedown', nodeMouseDown);
         _body.addEventListener('mousemove', nodeMouseMove);
         _body.addEventListener('mouseup', nodeMouseUp);
-
-        renderer.unbind('outNode', treatOutNode);
 
         // Deactivate drag graph.
         renderer.settings({mouseEnabled: false, enableHovering: false});
@@ -96,12 +105,10 @@
     };
 
     var nodeMouseUp = function(event) {
+      _isMouseDown = false;
       _mouse.addEventListener('mousedown', nodeMouseDown);
       _body.removeEventListener('mousemove', nodeMouseMove);
       _body.removeEventListener('mouseup', nodeMouseUp);
-
-      treatOutNode();
-      renderer.bind('outNode', treatOutNode);
 
       // Activate drag graph.
       renderer.settings({mouseEnabled: true, enableHovering: true});
@@ -109,37 +116,53 @@
     };
 
     var nodeMouseMove = function(event) {
+<<<<<<< HEAD
       var offset = calculateOffset(_container),
           x = event.pageX - offset.left,
           y = event.pageY - offset.top,
+=======
+
+      if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        clearTimeout(timeOut);
+        var timeOut = setTimeout(executeNodeMouseMove, 0);
+      } else {
+        executeNodeMouseMove();
+      }
+
+      function executeNodeMouseMove() {
+        var x = event.pageX - _container.offsetLeft,
+          y = event.pageY - _container.offsetTop,
+>>>>>>> 9188908f4212d6e2842362f68b61e099f55f9218
           cos = Math.cos(_camera.angle),
           sin = Math.sin(_camera.angle),
           nodes = s.graph.nodes(),
           ref = [];
 
-      // Getting and derotating the reference coordinates.
-      for (var i = 0; i < 2; i++) {
-        var n = nodes[i];
-        var aux = {
-          x: n.x * cos + n.y * sin,
-          y: n.y * cos - n.x * sin,
-          renX: n[_prefix + 'x'],
-          renY: n[_prefix + 'y'],
-        };
-        ref.push(aux);
+        // Getting and derotating the reference coordinates.
+        for (var i = 0; i < 2; i++) {
+          var n = nodes[i];
+          var aux = {
+            x: n.x * cos + n.y * sin,
+            y: n.y * cos - n.x * sin,
+            renX: n[_prefix + 'x'],
+            renY: n[_prefix + 'y']
+          };
+          ref.push(aux);
+        }
+
+        // Applying linear interpolation.
+        x = ((x - ref[0].renX) / (ref[1].renX - ref[0].renX)) *
+          (ref[1].x - ref[0].x) + ref[0].x;
+        y = ((y - ref[0].renY) / (ref[1].renY - ref[0].renY)) *
+          (ref[1].y - ref[0].y) + ref[0].y;
+
+        // Rotating the coordinates.
+        _node.x = x * cos - y * sin;
+        _node.y = y * cos + x * sin;
+
+        s.refresh();
+
       }
-
-      // Applying linear interpolation.
-      x = ((x - ref[0].renX) / (ref[1].renX - ref[0].renX)) *
-        (ref[1].x - ref[0].x) + ref[0].x;
-      y = ((y - ref[0].renY) / (ref[1].renY - ref[0].renY)) *
-        (ref[1].y - ref[0].y) + ref[0].y;
-
-      // Rotating the coordinates.
-      _node.x = x * cos - y * sin;
-      _node.y = y * cos + x * sin;
-
-      s.refresh();
     };
 
     renderer.bind('overNode', nodeMouseOver);

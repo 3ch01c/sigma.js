@@ -68,8 +68,16 @@
         // Applying layout
         _this.applyLayoutChanges();
 
-        // Send data back to worker and loop
-        _this.sendByteArrayToWorker();
+        if(!_this.config) _this.config = {};
+        // If the number of iterations is over the maximum defined
+        if (typeof _this.config.maxIterations == "number" &&
+          e.data.iterations >= _this.config.maxIterations) {
+          // Finish
+          _this.running = false;
+        } else {
+          // Send data back to worker and loop
+          _this.sendByteArrayToWorker();
+        }
 
         // Rendering graph
         _this.sigInst.refresh();
