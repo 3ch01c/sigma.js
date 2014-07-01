@@ -119,19 +119,8 @@
       var offset = calculateOffset(_container),
           x = event.pageX - offset.left,
           y = event.pageY - offset.top,
-
-      if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        clearTimeout(timeOut);
-        var timeOut = setTimeout(executeNodeMouseMove, 0);
-      } else {
-        executeNodeMouseMove();
-      }
-
-      function executeNodeMouseMove() {
-        var x = event.pageX - _container.offsetLeft,
-          y = event.pageY - _container.offsetTop,
           cos = Math.cos(_camera.angle),
-          sin = Math.sin(_camera.angle),
+          sin = math.sin(_camera.angle),
           nodes = s.graph.nodes(),
           ref = [];
 
