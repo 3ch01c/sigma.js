@@ -148,8 +148,7 @@
 
         s.refresh();
 
-      }
-    };
+      };
 
     renderer.bind('overNode', nodeMouseOver);
     renderer.bind('outNode', treatOutNode);
