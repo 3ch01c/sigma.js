@@ -49,7 +49,11 @@
     labelSize: 'fixed',
     // {string} The ratio between the font size of the label and the node size.
     labelSizeRatio: 1,
+<<<<<<< HEAD
     // {number} The ratio between the arrow size and its edge thickness.
+=======
+    // {string} The ratio between the arrow size and the edge thickness.
+>>>>>>> 82b53f0c2f13d591cae597ae7bdce34fdd197c05
     arrowSizeRatio: 2.5,
     // {number} The minimum size a node must have to see its label displayed.
     labelThreshold: 8,

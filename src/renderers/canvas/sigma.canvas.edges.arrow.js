@@ -24,7 +24,11 @@
         sY = source[prefix + 'y'],
         tX = target[prefix + 'x'],
         tY = target[prefix + 'y'],
+<<<<<<< HEAD
         aSize = settings('arrowSizeRatio'),
+=======
+        aSize = thickness * settings('arrowSizeRatio'),
+>>>>>>> 82b53f0c2f13d591cae597ae7bdce34fdd197c05
         d = Math.sqrt(Math.pow(tX - sX, 2) + Math.pow(tY - sY, 2)),
         aX = sX + (tX - sX) * (d - aSize - tSize) / d,
         aY = sY + (tY - sY) * (d - aSize - tSize) / d,
