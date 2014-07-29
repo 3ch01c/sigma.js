@@ -24,7 +24,7 @@
         sY = source[prefix + 'y'],
         tX = target[prefix + 'x'],
         tY = target[prefix + 'y'],
-        aSize = Math.max(thickness * settings('arrowSizeRatio'), settings('minArrowSize')),
+        aSize = settings('arrowSizeRatio'),
         d = Math.sqrt(Math.pow(tX - sX, 2) + Math.pow(tY - sY, 2)),
         aX = sX + (tX - sX) * (d - aSize - tSize) / d,
         aY = sY + (tY - sY) * (d - aSize - tSize) / d,
