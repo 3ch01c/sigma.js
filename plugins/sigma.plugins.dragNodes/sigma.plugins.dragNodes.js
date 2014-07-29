@@ -120,7 +120,7 @@
           x = event.pageX - offset.left,
           y = event.pageY - offset.top,
           cos = Math.cos(_camera.angle),
-          sin = math.sin(_camera.angle),
+          sin = Math.sin(_camera.angle),
           nodes = s.graph.nodes(),
           ref = [];
 

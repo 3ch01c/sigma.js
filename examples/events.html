@@ -31,6 +31,8 @@
 <script src="../src/misc/sigma.misc.animation.js"></script>
 <script src="../src/misc/sigma.misc.bindEvents.js"></script>
 <script src="../src/misc/sigma.misc.drawHovers.js"></script>
+<script src="../plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"></script>
+<script src="../plugins/sigma.events.drag/sigma.events.drag.js"></script>
 <!-- END SIGMA IMPORTS -->
 <div id="container">
   <style>
@@ -77,6 +79,7 @@ for (i = 0; i < E; i++)
     size: Math.random(),
     color: '#ccc'
   });
+sigma.renderers.def = sigma.renderers.canvas
 
 s = new sigma({
   graph: g,
@@ -85,6 +88,8 @@ s = new sigma({
     doubleClickEnabled: false
   }
 });
+
+sigma.plugins.dragNodes(s, s.renderers[0]);
 
 // Bind the events:
 s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
@@ -95,5 +100,8 @@ s.bind('clickStage', function(e) {
 });
 s.bind('doubleClickStage rightClickStage', function(e) {
   console.log(e.type);
+});
+s.bind('drag drop', function(e) {
+	console.log(e.type);
 });
 </script>

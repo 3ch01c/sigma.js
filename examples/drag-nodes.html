@@ -35,6 +35,7 @@
 <script src="../plugins/sigma.plugins.dragNodes/sigma.plugins.dragNodes.js"></script>
 <script src="../plugins/sigma.layout.forceAtlas2/worker.js"></script>
 <script src="../plugins/sigma.layout.forceAtlas2/supervisor.js"></script>
+<script src="../plugins/sigma.events.drag/sigma.events.drag.js"></script>
 <div id="container">
   <style>
     #graph-container {
@@ -102,4 +103,8 @@ s.startForceAtlas2();
 setTimeout(function() {
   s.killForceAtlas2();
 },2000)
+
+s.bind('drag', function() {
+	console.log('dragging node');
+});
 </script>

@@ -72,7 +72,7 @@ var s = new sigma({
     db = new sigma.plugins.neighborhoods();
 
 document.getElementById('toggle-layout').addEventListener('click', function() {
-  if ((s.forceatlas2 || {}).isRunning) {
+  if (document.getElementById('toggle-layout').innerHTML == 'Stop layout') {
     s.stopForceAtlas2();
     document.getElementById('toggle-layout').innerHTML = 'Start layout';
   } else {

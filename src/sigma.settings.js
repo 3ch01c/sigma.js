@@ -51,6 +51,8 @@
     labelSizeRatio: 1,
     // {number} The minimum size a node must have to see its label displayed.
     labelThreshold: 8,
+    // {number} The ratio between the arrow size and its edge thickness.
+    arrowSizeRatio: 5,
     // {number} The oversampling factor used in WebGL renderer.
     webglOversamplingRatio: 2,
     // {number} The size of the border of hovered nodes.

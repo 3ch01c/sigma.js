@@ -61,6 +61,7 @@ module.exports = function(grunt) {
     'parsers.json',
     'plugins.animate',
     'plugins.dragNodes',
+    'plugins.highlightNeighbors',
     'plugins.neighborhoods',
     'renderers.customShapes'
   ];
@@ -118,7 +119,7 @@ module.exports = function(grunt) {
           'build/sigma.min.js': coreJsFiles
         },
         options: {
-          banner: '/* sigma.js - <%= pkg.description %> - Version: <%= pkg.version %> - Author: Alexis Jacomy, Sciences-Po Médialab - License: MIT */\n'
+          banner: '/* sigma.js - <%= pkg.description %> - Version: <%= pkg.version %> - Author: Alexis Jacomy, Sciences-Po M��dialab - License: MIT */\n'
         }
       },
       plugins: {

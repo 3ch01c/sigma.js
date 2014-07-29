@@ -31,7 +31,7 @@
       //console.log('mousemove');
       if(Math.abs(e.clientX - _x) || Math.abs(e.clientY - _y) > 1) {
         _drag = true;
-        //console.log('drag');
+        console.log('drag');
         _self.dispatchEvent('drag');
       }
     };
@@ -52,6 +52,7 @@
       setTimeout(function() {
         //console.log('mouseup');
         if (_drag) {
+          console.log('drop');
           _self.dispatchEvent('drop');
         }
         _drag = false;
